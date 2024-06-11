@@ -1,5 +1,93 @@
 # 1. Proponha um modelo em estrela ou floco de neve com o fato pedido, as seguintes métricas serão obrigatórias- valor total do pedido, valor unitario do prato e quantidade. As dimensões obrigatórias serão, cliente, ano mes e dia.
 
+# Modelo Estrela para Análise de Pedidos
+
+## Tabela de Fatos
+
+### `tb_pedido`
+- **Colunas**:
+  - `codigo_pedido` (chave primária)
+  - `codigo_mesa` (chave estrangeira referenciando `tb_mesa`)
+  - `codigo_prato` (chave estrangeira referenciando `tb_prato`)
+  - `quantidade_pedido`
+  - `valor_unitario_prato`
+  - `valor_total_pedido`
+  - `data_pedido`
+
+## Tabelas de Dimensão
+
+### `tb_cliente`
+- **Colunas**:
+  - `id_cliente` (chave primária)
+  - `cpf_cliente`
+  - `nome_cliente`
+  - `email_cliente`
+  - `telefone_cliente`
+
+### `tb_mesa`
+- **Colunas**:
+  - `codigo_mesa` (chave primária)
+  - `id_cliente` (chave estrangeira referenciando `tb_cliente`)
+  - `num_pessoa_mesa`
+  - `data_hora_entrada`
+  - `data_hora_saida`
+
+### `tb_prato`
+- **Colunas**:
+  - `codigo_prato` (chave primária)
+  - `codigo_tipo_prato` (chave estrangeira referenciando `tb_tipo_prato`)
+  - `nome_prato`
+  - `preco_unitario_prato`
+
+### `tb_tipo_prato`
+- **Colunas**:
+  - `codigo_tipo_prato` (chave primária)
+  - `nome_tipo_prato`
+
+### `tb_situacao_pedido`
+- **Colunas**:
+  - `codigo_situacao_pedido` (chave primária)
+  - `nome_situacao_pedido`
+
+### `tb_data`
+- **Colunas**:
+  - `data_pedido` (chave primária)
+  - `ano`
+  - `mes`
+  - `dia`
+
+## Modelo Estrela
+
+```plaintext
+                              +------------------+
+                              |   tb_cliente     |
+                              +------------------+
+                                     |
+                                     v
+                              +------------------+
+                              |    tb_mesa       |
+                              +------------------+
+                                     |
+                                     v
++------------------+        +------------------+        +----------------------+
+|  tb_tipo_prato   |<------>|     tb_prato     |<------>|      tb_pedido       |
++------------------+        +------------------+        +----------------------+
+                                     |                   |     ^     ^     ^
+                                     |                   |     |     |     |
+                              +------------------+       |     |     |     |
+                              |  tb_situacao_pedido|     |     |     |     |
+                              +------------------+       |     |     |     |
+                                                         |     |     |     |
+                                                         |     |     |     |
+                                                         |     |     |     |
+                                                         |     |     |     |
+                                                  +------------------+
+                                                  |    tb_data       |
+                                                  +------------------+
+```
+
+
+
 
 # 2. Entregar as queries que respondam:
 
